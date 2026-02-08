@@ -697,7 +697,7 @@ h1, h2, h3 {
 }
 .footer-col a:hover { color: #fff; }
 .footer-social-link {
-  display: inline-flex !important;
+  display: flex !important;
   align-items: center;
   gap: 8px;
 }

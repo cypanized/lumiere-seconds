@@ -6,13 +6,6 @@
       stroke: #e8e5e0;
       stroke-width: 0.3;
     }
-    /* Highlighted countries — Lumière Seconds locations */
-    #SG, #AE, #TR, #RU {
-      fill: #c4a265;
-      stroke: #8b6f3a;
-      stroke-width: 1.2;
-      filter: drop-shadow(0 0 4px rgba(181,154,108,0.6));
-    }
   </style>
 
  

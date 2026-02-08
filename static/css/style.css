@@ -752,15 +752,16 @@ h1, h2, h3 {
   background: var(--bg-alt);
 }
 .about-map-wrapper {
-  max-width: 960px;
+  max-width: 700px;
   margin: 0 auto;
 }
 .map-container {
   position: relative;
-  margin-bottom: 40px;
-  border-radius: 8px;
+  margin-bottom: 48px;
+  border-radius: 12px;
   overflow: hidden;
   background: #f5f3f0;
+  box-shadow: 0 2px 16px rgba(0,0,0,.06);
 }
 .world-map-img {
   display: block;
@@ -778,57 +779,69 @@ h1, h2, h3 {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 28px;
-  height: 28px;
-  margin: -14px 0 0 -14px;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
   border-radius: 50%;
   background: var(--gold);
   opacity: 0;
   animation: pinPulse 2.5s ease-out infinite;
 }
-.city-pin:nth-child(2) .pin-glow { animation-delay: 0.5s; }
-.city-pin:nth-child(3) .pin-glow { animation-delay: 1.0s; }
-.city-pin:nth-child(4) .pin-glow { animation-delay: 1.5s; }
+.city-pin:nth-child(2) .pin-glow { animation-delay: 0.6s; }
+.city-pin:nth-child(3) .pin-glow { animation-delay: 1.2s; }
+.city-pin:nth-child(4) .pin-glow { animation-delay: 1.8s; }
 
 @keyframes pinPulse {
-  0% { transform: scale(0.5); opacity: 0.5; }
-  100% { transform: scale(2); opacity: 0; }
+  0% { transform: scale(0.5); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
 }
 .pin-dot {
   display: block;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--gold);
   border: 2px solid #fff;
-  box-shadow: 0 0 0 3px rgba(181,154,108,.2), 0 1px 4px rgba(0,0,0,.15);
+  box-shadow: 0 0 0 3px rgba(181,154,108,.25), 0 1px 4px rgba(0,0,0,.15);
 }
 .pin-label {
   position: absolute;
-  top: 18px;
+  top: 16px;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 500;
-  letter-spacing: .04em;
+  letter-spacing: .06em;
+  text-transform: uppercase;
   color: var(--text);
+  background: rgba(255,255,255,.85);
+  padding: 2px 6px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
 }
 
 /* Location cards */
 .about-locations {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: 16px;
 }
 .about-location-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
+  gap: 14px;
+  padding: 20px 22px;
   background: var(--surface);
-  box-shadow: var(--shadow-sm);
+  border-radius: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,.04);
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.about-location-item:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  transform: translateY(-2px);
 }
 .location-dot {
   width: 10px;
@@ -836,18 +849,22 @@ h1, h2, h3 {
   border-radius: 50%;
   background: var(--gold);
   flex-shrink: 0;
-  box-shadow: 0 0 0 3px rgba(181,154,108,.2);
+  box-shadow: 0 0 0 4px rgba(181,154,108,.15);
 }
 .about-location-item strong {
   display: block;
-  font-size: 14px;
+  font-family: var(--font-display);
+  font-size: 15px;
   font-weight: 500;
-  letter-spacing: .04em;
+  letter-spacing: .02em;
+  color: var(--text);
+  margin-bottom: 2px;
 }
 .about-location-item span {
   font-size: 11px;
   color: var(--text-secondary);
-  letter-spacing: .02em;
+  letter-spacing: .03em;
+  font-weight: 400;
 }
 
 /* ============================================================
@@ -1442,9 +1459,10 @@ h1, h2, h3 {
   .td-product .td-brand { display: inline; margin-right: 6px; }
   .form-preview-img { width: 72px; height: 72px; }
   .footer-bottom { flex-direction: column; gap: 8px; align-items: center; }
-  .pin-label { font-size: 10px; padding: 2px 6px; }
-  .pin-dot { width: 8px; height: 8px; }
-  .pin-glow { width: 22px; height: 22px; }
+  .pin-label { font-size: 8px; padding: 1px 5px; }
+  .pin-dot { width: 6px; height: 6px; }
+  .pin-glow { width: 18px; height: 18px; margin: -9px 0 0 -9px; }
+  .about-map-wrapper { max-width: 100%; }
 }
 
 @media (max-width: 480px) {
@@ -1456,6 +1474,7 @@ h1, h2, h3 {
   .container { padding: 0 12px; }
   .about-hero { min-height: 240px; }
   .about-value-item { padding: 18px 16px; }
-  .about-locations { grid-template-columns: 1fr; }
-  .pin-label { font-size: 9px; }
+  .about-locations { grid-template-columns: 1fr; gap: 10px; }
+  .about-location-item { padding: 16px 18px; }
+  .pin-label { font-size: 7px; top: 12px; }
 }

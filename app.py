@@ -638,7 +638,7 @@ if __name__ == "__main__":
     get_secret_key()  # Initialize on startup
     # Ensure default admin exists
     load_admins()
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 8080))
     server = HTTPServer(("", port), Handler)
     print(f"\n  Lumière Seconds is running at http://localhost:{port}")
     print(f"  Admin panel: http://localhost:{port}/admin")

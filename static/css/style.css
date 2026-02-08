@@ -756,32 +756,11 @@ h1, h2, h3 {
   margin: 0 auto;
 }
 .about-world-map {
-  width: 100%;
-  height: auto;
-  margin-bottom: 40px;
+  display: block;
+  margin: 0 auto 40px;
+  border-radius: 4px;
+  box-shadow: var(--shadow-sm);
 }
-.map-landmass path {
-  transition: fill var(--transition);
-}
-.pin-label {
-  font-family: var(--font-body);
-  font-size: 11px;
-  fill: var(--text);
-  letter-spacing: .06em;
-  font-weight: 500;
-}
-.pin-pulse {
-  fill: var(--gold);
-  opacity: 0;
-  animation: pinPulse 2.5s ease-out infinite;
-}
-@keyframes pinPulse {
-  0% { opacity: .5; r: 5; }
-  100% { opacity: 0; r: 18; }
-}
-.map-pin:nth-child(2) .pin-pulse { animation-delay: .3s; }
-.map-pin:nth-child(3) .pin-pulse { animation-delay: .6s; }
-.map-pin:nth-child(4) .pin-pulse { animation-delay: .9s; }
 
 .about-locations {
   display: grid;

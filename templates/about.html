@@ -89,80 +89,180 @@
 <section class="section about-map-section">
   <div class="container">
     <h2 class="section-title" style="text-align:center; margin-bottom: 48px;">Our Global Presence</h2>
-    <div class="about-map-wrapper">
-      <svg viewBox="0 0 1000 500" class="about-world-map" xmlns="http://www.w3.org/2000/svg">
-        <!-- Simplified world map paths -->
-        <g class="map-landmass" fill="none" stroke="var(--border)" stroke-width="0.8">
-          <!-- North America -->
-          <path d="M120,120 L130,100 L155,85 L180,80 L210,78 L235,82 L255,95 L260,110 L265,130 L255,145 L250,160 L240,175 L235,190 L220,200 L200,210 L185,215 L170,210 L155,205 L140,195 L130,185 L120,170 L115,155 L115,140 Z" fill="var(--bg-alt)"/>
-          <!-- Greenland -->
-          <path d="M280,55 L300,50 L320,55 L330,65 L325,80 L310,85 L290,80 L280,70 Z" fill="var(--bg-alt)"/>
-          <!-- South America -->
-          <path d="M220,250 L235,240 L250,245 L265,255 L275,270 L280,290 L278,310 L275,330 L268,350 L258,370 L245,385 L235,390 L228,380 L222,360 L218,340 L215,320 L212,300 L210,280 L212,265 Z" fill="var(--bg-alt)"/>
-          <!-- Europe -->
-          <path d="M440,90 L455,82 L470,80 L490,78 L510,82 L520,90 L525,100 L530,110 L528,125 L520,135 L510,140 L495,145 L480,148 L465,145 L455,138 L445,128 L440,115 L438,100 Z" fill="var(--bg-alt)"/>
-          <!-- UK/Ireland -->
-          <path d="M430,88 L435,82 L440,80 L445,85 L442,92 L436,95 Z" fill="var(--bg-alt)"/>
-          <!-- Scandinavia -->
-          <path d="M480,55 L490,48 L500,50 L505,60 L502,72 L495,78 L488,75 L482,68 Z" fill="var(--bg-alt)"/>
-          <!-- Africa -->
-          <path d="M460,170 L480,165 L500,160 L520,162 L535,170 L545,185 L548,200 L550,220 L548,245 L542,265 L535,285 L525,300 L515,310 L505,315 L495,310 L485,300 L478,285 L472,265 L465,245 L460,225 L455,205 L455,185 Z" fill="var(--bg-alt)"/>
-          <!-- Middle East -->
-          <path d="M545,140 L565,135 L580,138 L590,145 L595,155 L592,165 L585,175 L575,178 L562,175 L550,170 L542,160 L540,150 Z" fill="var(--bg-alt)"/>
-          <!-- Russia/Central Asia -->
-          <path d="M530,80 L560,70 L600,62 L650,58 L700,55 L750,58 L790,65 L810,75 L820,88 L815,100 L800,108 L780,112 L750,110 L720,108 L690,105 L660,100 L630,95 L600,90 L570,88 L545,90 Z" fill="var(--bg-alt)"/>
-          <!-- India -->
-          <path d="M620,155 L640,148 L655,150 L665,160 L668,175 L665,190 L658,205 L648,215 L638,218 L628,212 L620,200 L615,185 L612,170 Z" fill="var(--bg-alt)"/>
-          <!-- China/East Asia -->
-          <path d="M690,100 L720,95 L750,98 L775,105 L790,115 L795,130 L790,145 L778,155 L765,160 L748,162 L730,158 L715,150 L705,140 L698,128 L692,115 Z" fill="var(--bg-alt)"/>
-          <!-- Japan -->
-          <path d="M805,110 L812,105 L818,108 L820,118 L815,125 L808,128 L802,122 Z" fill="var(--bg-alt)"/>
-          <!-- Southeast Asia -->
-          <path d="M700,175 L720,170 L738,175 L748,185 L745,198 L735,205 L720,208 L708,202 L700,192 Z" fill="var(--bg-alt)"/>
-          <!-- Indonesia/Philippines -->
-          <path d="M715,215 L730,212 L745,215 L755,222 L760,232 L755,240 L742,242 L728,238 L718,230 Z" fill="var(--bg-alt)"/>
-          <!-- Australia -->
-          <path d="M740,310 L770,300 L800,298 L825,305 L840,318 L845,335 L838,350 L822,360 L800,365 L778,362 L758,355 L745,342 L738,328 Z" fill="var(--bg-alt)"/>
-        </g>
+    <div class="about-map-wrapper" id="mapWrapper">
+      <!-- Map rendered via JS for accurate projection -->
+      <canvas id="worldMapCanvas" width="960" height="480" class="about-world-map"></canvas>
+      <script>
+      (function() {
+        const canvas = document.getElementById('worldMapCanvas');
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
 
-        <!-- Location pins with pulse animation -->
-        <!-- Singapore -->
-        <g class="map-pin" transform="translate(720, 210)">
-          <circle r="12" class="pin-pulse"/>
-          <circle r="5" fill="var(--gold)" stroke="#fff" stroke-width="1.5"/>
-          <text y="22" text-anchor="middle" class="pin-label">Singapore</text>
-        </g>
+        // Mercator projection helpers
+        function lonToX(lon) { return (lon + 180) / 360 * W; }
+        function latToY(lat) {
+          const latRad = lat * Math.PI / 180;
+          const mercN = Math.log(Math.tan(Math.PI/4 + latRad/2));
+          return H/2 - (mercN / Math.PI) * H/2;
+        }
 
-        <!-- Dubai -->
-        <g class="map-pin" transform="translate(575, 165)">
-          <circle r="12" class="pin-pulse"/>
-          <circle r="5" fill="var(--gold)" stroke="#fff" stroke-width="1.5"/>
-          <text y="22" text-anchor="middle" class="pin-label">Dubai</text>
-        </g>
+        // Dot matrix world map — lat/lon pairs for landmasses
+        // Each row: [lat, lon] representing a dot on land
+        const dotSpacing = 4; // degrees between dots
+        const landPolygons = [
+          // North America (simplified bounding regions)
+          {minLat:25,maxLat:70,minLon:-170,maxLon:-55},
+          // Central America
+          {minLat:8,maxLat:25,minLon:-120,maxLon:-75},
+          // South America
+          {minLat:-55,maxLat:12,minLon:-82,maxLon:-34},
+          // Europe
+          {minLat:36,maxLat:72,minLon:-12,maxLon:45},
+          // Africa
+          {minLat:-35,maxLat:37,minLon:-18,maxLon:52},
+          // Middle East
+          {minLat:12,maxLat:42,minLon:25,maxLon:63},
+          // Russia/Central Asia
+          {minLat:42,maxLat:75,minLon:28,maxLon:180},
+          // South Asia
+          {minLat:5,maxLat:38,minLon:60,maxLon:98},
+          // East Asia
+          {minLat:18,maxLat:55,minLon:98,maxLon:145},
+          // Southeast Asia
+          {minLat:-10,maxLat:20,minLon:95,maxLon:142},
+          // Australia
+          {minLat:-42,maxLat:-10,minLon:112,maxLon:155},
+          // UK/Ireland
+          {minLat:50,maxLat:60,minLon:-11,maxLon:2},
+          // Scandinavia
+          {minLat:55,maxLat:72,minLon:4,maxLon:32},
+          // Japan
+          {minLat:30,maxLat:46,minLon:129,maxLon:146},
+          // Indonesia
+          {minLat:-8,maxLat:6,minLon:95,maxLon:141}
+        ];
 
-        <!-- Istanbul -->
-        <g class="map-pin" transform="translate(530, 118)">
-          <circle r="12" class="pin-pulse"/>
-          <circle r="5" fill="var(--gold)" stroke="#fff" stroke-width="1.5"/>
-          <text y="22" text-anchor="middle" class="pin-label">Istanbul</text>
-        </g>
+        // More refined coastline check using known inland/ocean exclusions
+        function isLand(lat, lon) {
+          // Ocean exclusions
+          if (lon > -55 && lon < -12 && lat > -5 && lat < 35) return false; // Atlantic
+          if (lon > 52 && lon < 60 && lat > -5 && lat < 12) return false; // Indian Ocean
+          if (lat > -10 && lat < 5 && lon > 45 && lon < 95) return false; // Indian Ocean
+          // Hudson Bay
+          if (lon > -96 && lon < -75 && lat > 50 && lat < 65) return false;
+          // Gulf of Mexico
+          if (lon > -98 && lon < -80 && lat > 18 && lat < 30 && lon > -90) return false;
+          // Mediterranean
+          if (lon > -6 && lon < 37 && lat > 30 && lat < 42 && !(lon > 25 && lat > 36)) return false;
+          // Caribbean/Atlantic gap
+          if (lon > -82 && lon < -58 && lat > 10 && lat < 22) return false;
+          // Caspian Sea
+          if (lon > 46 && lon < 55 && lat > 36 && lat < 47) return false;
+          // South America shape: exclude NE Brazil coast overflow
+          if (lat < -55) return false;
+          // Pacific between Americas and Asia
+          if (lon > -170 && lon < -120 && lat < 8) return false;
+          // Sahara to Saudi (still land, keep)
+          for (const r of landPolygons) {
+            if (lat >= r.minLat && lat <= r.maxLat && lon >= r.minLon && lon <= r.maxLon) return true;
+          }
+          return false;
+        }
 
-        <!-- Moscow -->
-        <g class="map-pin" transform="translate(560, 78)">
-          <circle r="12" class="pin-pulse"/>
-          <circle r="5" fill="var(--gold)" stroke="#fff" stroke-width="1.5"/>
-          <text y="22" text-anchor="middle" class="pin-label">Moscow</text>
-        </g>
+        // Draw background
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-alt').trim() || '#edecea';
+        ctx.fillRect(0, 0, W, H);
 
-        <!-- Connection lines between cities -->
-        <g class="map-connections" stroke="var(--gold)" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.4">
-          <line x1="560" y1="78" x2="530" y2="118"/>
-          <line x1="530" y1="118" x2="575" y2="165"/>
-          <line x1="575" y1="165" x2="720" y2="210"/>
-          <line x1="560" y1="78" x2="575" y2="165"/>
-          <line x1="530" y1="118" x2="720" y2="210"/>
-        </g>
-      </svg>
+        // Draw dots
+        const dotColor = getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#e0ddd8';
+        const dotRadius = 1.8;
+
+        for (let lat = 80; lat > -60; lat -= dotSpacing) {
+          for (let lon = -180; lon < 180; lon += dotSpacing) {
+            if (isLand(lat, lon)) {
+              const x = lonToX(lon);
+              const y = latToY(lat);
+              ctx.beginPath();
+              ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+              ctx.fillStyle = '#c4c0b8';
+              ctx.fill();
+            }
+          }
+        }
+
+        // City locations
+        const cities = [
+          { name: 'Singapore', lat: 1.35, lon: 103.82 },
+          { name: 'Dubai', lat: 25.20, lon: 55.27 },
+          { name: 'Istanbul', lat: 41.01, lon: 28.98 },
+          { name: 'Moscow', lat: 55.75, lon: 37.62 }
+        ];
+
+        const cityCoords = cities.map(c => ({
+          ...c,
+          x: lonToX(c.lon),
+          y: latToY(c.lat)
+        }));
+
+        // Draw connection lines
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim() || '#b59a6c';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([6, 4]);
+        ctx.globalAlpha = 0.35;
+        for (let i = 0; i < cityCoords.length; i++) {
+          for (let j = i + 1; j < cityCoords.length; j++) {
+            ctx.beginPath();
+            ctx.moveTo(cityCoords[i].x, cityCoords[i].y);
+            ctx.lineTo(cityCoords[j].x, cityCoords[j].y);
+            ctx.stroke();
+          }
+        }
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1;
+
+        // Draw city pins
+        const gold = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim() || '#b59a6c';
+
+        cityCoords.forEach(c => {
+          // Outer glow
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, 14, 0, Math.PI * 2);
+          ctx.fillStyle = gold + '22';
+          ctx.fill();
+
+          // Mid ring
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, 9, 0, Math.PI * 2);
+          ctx.fillStyle = gold + '33';
+          ctx.fill();
+
+          // Pin dot
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, 5, 0, Math.PI * 2);
+          ctx.fillStyle = gold;
+          ctx.fill();
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Label
+          ctx.font = '500 11px Inter, sans-serif';
+          ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#1a1a1a';
+          ctx.textAlign = 'center';
+          ctx.fillText(c.name, c.x, c.y + 24);
+        });
+
+        // Make canvas responsive
+        function resize() {
+          const wrapper = document.getElementById('mapWrapper');
+          const scale = wrapper.clientWidth / W;
+          canvas.style.width = wrapper.clientWidth + 'px';
+          canvas.style.height = (H * scale) + 'px';
+        }
+        resize();
+        window.addEventListener('resize', resize);
+      })();
+      </script>
 
       <div class="about-locations">
         <div class="about-location-item">

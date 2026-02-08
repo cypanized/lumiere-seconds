@@ -696,6 +696,17 @@ h1, h2, h3 {
   transition: color var(--transition);
 }
 .footer-col a:hover { color: #fff; }
+.footer-social-link {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+}
+.footer-social-link svg {
+  flex-shrink: 0;
+  opacity: .7;
+  transition: opacity var(--transition);
+}
+.footer-social-link:hover svg { opacity: 1; }
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,.1);
   padding-top: 24px;

@@ -7,19 +7,29 @@ import uuid
 import hashlib
 import hmac
 import secrets
+import shutil
 import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs, unquote
 from datetime import datetime
 from http.cookies import SimpleCookie
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+_APP_DIR = os.path.dirname(os.path.abspath(__file__))
+PERSIST_DIR = os.environ.get("PERSIST_DIR", os.path.join(_APP_DIR, "data"))
+DATA_DIR = PERSIST_DIR
 DATA_FILE = os.path.join(DATA_DIR, "products.json")
 ADMINS_FILE = os.path.join(DATA_DIR, "admins.json")
-UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "static", "images", "products")
+UPLOAD_DIR = os.path.join(PERSIST_DIR, "uploads")
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
+
+# Seed default data on first deploy (volume starts empty)
+SEED_DIR = os.path.join(_APP_DIR, "data")
+if not os.path.exists(DATA_FILE) and os.path.abspath(SEED_DIR) != os.path.abspath(DATA_DIR):
+    seed_file = os.path.join(SEED_DIR, "products.json")
+    if os.path.exists(seed_file):
+        shutil.copy2(seed_file, DATA_FILE)
 
 # ── Auth helpers ──────────────────────────────────────────────
 
@@ -362,7 +372,7 @@ MIME_TYPES = {
     ".ico": "image/x-icon", ".woff2": "font/woff2", ".woff": "font/woff",
 }
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = _APP_DIR
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -434,6 +444,8 @@ class Handler(BaseHTTPRequestHandler):
                 else:
                     self.send_redirect("/admin?msg=Product+not+found")
 
+            elif path.startswith("/uploads/"):
+                self.serve_upload(path)
             elif path.startswith("/static/"):
                 self.serve_static(path)
             else:
@@ -490,7 +502,7 @@ class Handler(BaseHTTPRequestHandler):
                     save_path = os.path.join(UPLOAD_DIR, save_name)
                     with open(save_path, "wb") as f:
                         f.write(data)
-                    images.append(f"/static/images/products/{save_name}")
+                    images.append(f"/uploads/{save_name}")
 
                 if not images and fields.get("image_urls", "").strip():
                     images = [u.strip() for u in fields["image_urls"].split(",") if u.strip()]
@@ -530,7 +542,7 @@ class Handler(BaseHTTPRequestHandler):
                             save_path = os.path.join(UPLOAD_DIR, save_name)
                             with open(save_path, "wb") as f:
                                 f.write(data)
-                            new_images.append(f"/static/images/products/{save_name}")
+                            new_images.append(f"/uploads/{save_name}")
 
                         if not new_images and fields.get("image_urls", "").strip():
                             new_images = [u.strip() for u in fields["image_urls"].split(",") if u.strip()]
@@ -616,6 +628,24 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", mime)
         self.send_header("Content-Length", str(len(data)))
         self.send_header("Cache-Control", "no-cache")
+        self.end_headers()
+        self.wfile.write(data)
+
+    def serve_upload(self, path):
+        fname = os.path.basename(path)  # only serve direct files, no traversal
+        file_path = os.path.join(UPLOAD_DIR, fname)
+        if not os.path.isfile(file_path):
+            self.send_response(404)
+            self.end_headers()
+            return
+        ext = os.path.splitext(file_path)[1].lower()
+        mime = MIME_TYPES.get(ext, "application/octet-stream")
+        with open(file_path, "rb") as f:
+            data = f.read()
+        self.send_response(200)
+        self.send_header("Content-Type", mime)
+        self.send_header("Content-Length", str(len(data)))
+        self.send_header("Cache-Control", "public, max-age=86400")
         self.end_headers()
         self.wfile.write(data)
 

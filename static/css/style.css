@@ -1191,13 +1191,30 @@ h1, h2, h3 {
     font-weight: 500;
   }
   .admin-form .form-row { grid-template-columns: 1fr; }
+  .admin-form { padding: 28px 20px 32px; max-width: 100%; }
+  .admin-form h2 { font-size: 20px; margin-bottom: 28px; padding-bottom: 16px; }
+  .admin-form .form-group { margin-bottom: 20px; }
+  .admin-form .form-group input,
+  .admin-form .form-group textarea,
+  .admin-form .form-group select { padding: 12px 14px; font-size: 14px; }
+  .admin-form .form-actions { grid-template-columns: 1fr; }
+  .admin-form .form-actions .btn-primary,
+  .admin-form .form-actions .btn-secondary { width: 100%; text-align: center; }
+  .admin-form .checkbox-row { flex-direction: column; gap: 12px; }
+  .admin-form .file-input { padding: 12px 14px; font-size: 12px; }
+  .admin-header { flex-direction: column; align-items: flex-start; gap: 16px; }
   .admin-users-layout { grid-template-columns: 1fr; }
   .admin-thumb { width: 44px; height: 44px; }
   .td-product .td-brand { display: inline; margin-right: 6px; }
+  .form-preview-img { width: 72px; height: 72px; }
+  .footer-bottom { flex-direction: column; gap: 8px; align-items: center; }
 }
 
 @media (max-width: 480px) {
   .product-grid { grid-template-columns: 1fr; }
   .logo { font-size: 16px; }
   .hero h1 { font-size: 24px; }
+  .admin-form { padding: 20px 16px 24px; }
+  .admin-form h2 { font-size: 18px; }
+  .container { padding: 0 12px; }
 }

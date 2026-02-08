@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumiere Seconds — Curated Pre-Owned Luxury</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">Lumiere<span>Seconds</span></a>
+    <nav class="main-nav">
+      <a href="/" class="active">Home</a>
+      <a href="/products">Shop</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <div class="header-icons">
+      <a href="/products" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      </a>
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Home</a>
+  <a href="/products">Shop All</a>
+  <a href="/contact">Contact</a>
+</div>
+
+<!-- Hero -->
+<section class="hero-luxe">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Authenticated &bull; Curated &bull; Timeless</span>
+    <h1 class="hero-headline">Where Luxury<br><em>Finds New Life</em></h1>
+    <p class="hero-sub">Rare and coveted pieces from the world's finest maisons — each one authenticated, inspected, and ready for its next chapter.</p>
+    <div class="hero-actions">
+      <a href="/products" class="hero-btn-primary">Explore the Collection</a>
+      <a href="/contact" class="hero-btn-outline">Consign With Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- New Arrivals -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">New Arrivals</h2>
+      <a href="/products" class="section-link">View All</a>
+    </div>
+    <div class="product-grid">
+      {{new_products}}
+    </div>
+  </div>
+</section>
+
+<!-- Featured -->
+<section class="section" style="background: var(--bg-alt);">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Editor's Selection</h2>
+      <a href="/products" class="section-link">View All</a>
+    </div>
+    <div class="product-grid">
+      {{featured_products}}
+    </div>
+  </div>
+</section>
+
+<!-- Banner -->
+<section class="hero" style="padding: 56px 24px;">
+  <h1 style="font-size: clamp(20px, 4vw, 32px); margin-bottom: 20px;">Sell With Us</h1>
+  <p style="margin-bottom: 24px;">Consign your luxury pieces with Lumiere Seconds</p>
+  <a href="/contact" class="btn-primary" style="display: inline-block;">Get in Touch</a>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">Lumiere Seconds</div>
+        <p class="footer-tagline">Curated pre-owned luxury. Every piece authenticated and carefully selected for the discerning collector.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="/">Home</a>
+        <a href="/products">Shop All</a>
+        <a href="/contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="https://wa.me/971501234567" target="_blank">WhatsApp</a>
+        <a href="mailto:hello@lumiereseconds.com">Email</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Lumiere Seconds. All rights reserved.</span>
+      <a href="/admin" class="footer-admin-link" title="Admin">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Admin
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+</script>
+</body>
+</html>

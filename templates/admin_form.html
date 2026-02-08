@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{form_title}} — Lumiere Seconds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">Lumiere<span>Seconds</span></a>
+    <nav class="main-nav">
+      <a href="/">Home</a>
+      <a href="/products">Shop</a>
+      <a href="/contact">Contact</a>
+      <a href="/admin" class="active">Admin</a>
+    </nav>
+    <div class="header-icons">
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Home</a>
+  <a href="/products">Shop All</a>
+  <a href="/contact">Contact</a>
+  <a href="/admin">Admin</a>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/admin">Admin</a><span class="sep">/</span>
+      <span>{{form_title}}</span>
+    </div>
+
+    <form class="admin-form" method="POST" action="{{action}}" enctype="multipart/form-data">
+      <h2>{{form_title}}</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="brand">Brand</label>
+          <input type="text" id="brand" name="brand" value="{{brand}}" required placeholder="e.g. Chanel, Dior, Hermès">
+        </div>
+        <div class="form-group">
+          <label for="name">Product Name</label>
+          <input type="text" id="name" name="name" value="{{name}}" required placeholder="e.g. Classic Flap Bag">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="price">Price (AED)</label>
+          <input type="number" id="price" name="price" value="{{price}}" required step="0.01" min="0" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category">
+            <option value="Bags" selected>Bags</option>
+            <option value="Watches">Watches</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Jewellery">Jewellery</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Clothing">Clothing</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="condition">Condition</label>
+        <select id="condition" name="condition">
+          <option value="Like New">Like New</option>
+          <option value="Excellent">Excellent</option>
+          <option value="Very Good">Very Good</option>
+          <option value="Good">Good</option>
+          <option value="Fair">Fair</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4" placeholder="Describe the item, its condition, and what's included...">{{description}}</textarea>
+      </div>
+
+      {{image_preview}}
+
+      <div class="form-group">
+        <label for="photos">Upload Photos</label>
+        <input type="file" id="photos" name="photos" accept="image/*" multiple class="file-input">
+        <span class="form-help">Upload product images (JPEG, PNG). Multiple files allowed.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="image_urls">Or Paste Image URLs</label>
+        <input type="text" id="image_urls" name="image_urls" value="{{current_images}}" placeholder="https://example.com/image.jpg (comma-separated)">
+        <span class="form-help">Comma-separated URLs. Used if no files uploaded.</span>
+      </div>
+
+      <div class="checkbox-row">
+        <div class="checkbox-group">
+          <input type="checkbox" id="is_new" name="is_new" {{is_new_checked}}>
+          <label for="is_new">Mark as New Arrival</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="is_featured" name="is_featured" {{is_featured_checked}}>
+          <label for="is_featured">Featured</label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">{{submit_label}}</button>
+        <a href="/admin" class="btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+// Pre-select category and condition if editing
+(function() {
+  const cat = '{{category}}';
+  const cond = '{{condition}}';
+  if (cat) {
+    const catEl = document.getElementById('category');
+    for (let o of catEl.options) { if (o.value === cat) o.selected = true; }
+  }
+  if (cond) {
+    const condEl = document.getElementById('condition');
+    for (let o of condEl.options) { if (o.value === cond) o.selected = true; }
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{page_title}} — Lumiere Seconds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">Lumiere<span>Seconds</span></a>
+    <nav class="main-nav">
+      <a href="/">Home</a>
+      <a href="/products">Shop</a>
+      <a href="/contact">Contact</a>
+      <a href="/admin">Admin</a>
+    </nav>
+    <div class="header-icons">
+      <a href="/products" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      </a>
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/" onclick="toggleMenu()">Home</a>
+  <a href="/products" onclick="toggleMenu()">Shop All</a>
+  <a href="/contact" onclick="toggleMenu()">Contact</a>
+  <a href="/admin" onclick="toggleMenu()">Admin</a>
+</div>

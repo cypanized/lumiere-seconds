@@ -201,7 +201,7 @@ def build_product_detail(product):
 
     badge = '<span class="detail-badge">New Arrival</span>' if product.get("is_new") else ""
     wa_msg = f"Hi, I'm interested in the {product['brand']} {product['name']} (AED {product['price']:,.2f}) listed on Lumière Seconds."
-    wa_link = f"https://wa.me/971501234567?text={wa_msg.replace(' ', '%20')}"
+    wa_link = f"https://wa.me/971544783154?text={wa_msg.replace(' ', '%20')}"
 
     return render_template("product_detail.html",
                            name=product["name"],

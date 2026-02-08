@@ -747,54 +747,6 @@ h1, h2, h3 {
   color: var(--text-secondary);
 }
 
-/* World map section */
-.about-map-section {
-  background: var(--bg-alt);
-}
-.about-map-wrapper {
-  max-width: 860px;
-  margin: 0 auto;
-}
-.about-world-map {
-  display: block;
-  margin: 0 auto 40px;
-  border-radius: 4px;
-  box-shadow: var(--shadow-sm);
-}
-
-.about-locations {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
-.about-location-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-}
-.location-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--gold);
-  flex-shrink: 0;
-  box-shadow: 0 0 0 3px rgba(181,154,108,.2);
-}
-.about-location-item strong {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: .04em;
-}
-.about-location-item span {
-  font-size: 11px;
-  color: var(--text-secondary);
-  letter-spacing: .02em;
-}
-
 /* ============================================================
    FOOTER
    ============================================================ */
@@ -1304,7 +1256,6 @@ h1, h2, h3 {
   .contact-layout { grid-template-columns: 1fr; gap: 40px; }
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
   .about-layout { grid-template-columns: 1fr; gap: 40px; }
-  .about-locations { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -1396,7 +1347,6 @@ h1, h2, h3 {
   .admin-form { padding: 20px 16px 24px; }
   .admin-form h2 { font-size: 18px; }
   .container { padding: 0 12px; }
-  .about-locations { grid-template-columns: 1fr; }
   .about-hero { min-height: 240px; }
   .about-value-item { padding: 18px 16px; }
 }

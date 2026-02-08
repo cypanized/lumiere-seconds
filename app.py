@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lumiere Seconds — Luxury Pre-Owned Store"""
+"""Lumière Seconds — Luxury Pre-Owned Store"""
 
 import json
 import os
@@ -200,7 +200,7 @@ def build_product_detail(product):
         thumb_html += f'<button class="thumb {active}" onclick="goSlide({i})"><img src="{img}" alt="thumb"></button>'
 
     badge = '<span class="detail-badge">New Arrival</span>' if product.get("is_new") else ""
-    wa_msg = f"Hi, I'm interested in the {product['brand']} {product['name']} (AED {product['price']:,.2f}) listed on Lumiere Seconds."
+    wa_msg = f"Hi, I'm interested in the {product['brand']} {product['name']} (AED {product['price']:,.2f}) listed on Lumière Seconds."
     wa_link = f"https://wa.me/971501234567?text={wa_msg.replace(' ', '%20')}"
 
     return render_template("product_detail.html",
@@ -634,7 +634,7 @@ if __name__ == "__main__":
     load_admins()
     port = int(os.environ.get("PORT", 8000))
     server = HTTPServer(("", port), Handler)
-    print(f"\n  Lumiere Seconds is running at http://localhost:{port}")
+    print(f"\n  Lumière Seconds is running at http://localhost:{port}")
     print(f"  Admin panel: http://localhost:{port}/admin")
     print(f"  Default login: admin / lumiere2026\n")
     server.serve_forever()

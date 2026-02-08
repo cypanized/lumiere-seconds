@@ -222,6 +222,10 @@ def build_contact():
     return render_template("contact.html")
 
 
+def build_about():
+    return render_template("about.html")
+
+
 def build_login(error=""):
     alert = f'<div class="alert alert-error">{error}</div>' if error else ""
     return render_template("login.html", alert=alert)
@@ -393,6 +397,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_page(build_product_detail(prod))
             elif path == "/contact":
                 self.send_page(build_contact())
+            elif path == "/about":
+                self.send_page(build_about())
 
             # Auth pages
             elif path == "/admin/login":

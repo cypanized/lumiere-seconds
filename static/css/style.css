@@ -655,6 +655,168 @@ h1, h2, h3 {
 .btn-primary:hover { background: var(--accent-light); }
 
 /* ============================================================
+   ABOUT PAGE
+   ============================================================ */
+.about-hero {
+  position: relative;
+  min-height: 320px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.about-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(59,63,54,.95) 0%, rgba(59,63,54,.7) 100%);
+}
+.about-hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 64px 24px;
+  color: #fff;
+}
+.about-hero-content .hero-eyebrow {
+  color: var(--gold);
+}
+.about-hero-content .hero-headline {
+  color: #fff;
+  font-size: clamp(32px, 6vw, 52px);
+}
+.about-hero-content .hero-headline em {
+  color: var(--gold);
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+  align-items: start;
+  padding: 24px 0;
+}
+.about-text h2.about-heading {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 400;
+  letter-spacing: .03em;
+  margin-bottom: 28px;
+  color: var(--text);
+}
+.about-text p {
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+.about-text p:last-child { margin-bottom: 0; }
+
+.about-values {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-top: 8px;
+}
+.about-value-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 24px;
+  background: var(--bg-alt);
+  transition: box-shadow var(--transition);
+}
+.about-value-item:hover {
+  box-shadow: var(--shadow-md);
+}
+.about-value-item svg {
+  flex-shrink: 0;
+  color: var(--gold);
+  margin-top: 2px;
+}
+.about-value-item h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+.about-value-item p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+/* World map section */
+.about-map-section {
+  background: var(--bg-alt);
+}
+.about-map-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+}
+.about-world-map {
+  width: 100%;
+  height: auto;
+  margin-bottom: 40px;
+}
+.map-landmass path {
+  transition: fill var(--transition);
+}
+.pin-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  fill: var(--text);
+  letter-spacing: .06em;
+  font-weight: 500;
+}
+.pin-pulse {
+  fill: var(--gold);
+  opacity: 0;
+  animation: pinPulse 2.5s ease-out infinite;
+}
+@keyframes pinPulse {
+  0% { opacity: .5; r: 5; }
+  100% { opacity: 0; r: 18; }
+}
+.map-pin:nth-child(2) .pin-pulse { animation-delay: .3s; }
+.map-pin:nth-child(3) .pin-pulse { animation-delay: .6s; }
+.map-pin:nth-child(4) .pin-pulse { animation-delay: .9s; }
+
+.about-locations {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.about-location-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.location-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(181,154,108,.2);
+}
+.about-location-item strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .04em;
+}
+.about-location-item span {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: .02em;
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 .site-footer {
@@ -1162,6 +1324,8 @@ h1, h2, h3 {
   .detail-layout { grid-template-columns: 1fr; gap: 32px; }
   .contact-layout { grid-template-columns: 1fr; gap: 40px; }
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+  .about-layout { grid-template-columns: 1fr; gap: 40px; }
+  .about-locations { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -1253,4 +1417,7 @@ h1, h2, h3 {
   .admin-form { padding: 20px 16px 24px; }
   .admin-form h2 { font-size: 18px; }
   .container { padding: 0 12px; }
+  .about-locations { grid-template-columns: 1fr; }
+  .about-hero { min-height: 240px; }
+  .about-value-item { padding: 18px 16px; }
 }

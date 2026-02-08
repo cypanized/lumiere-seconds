@@ -747,6 +747,109 @@ h1, h2, h3 {
   color: var(--text-secondary);
 }
 
+/* World map section */
+.about-map-section {
+  background: var(--bg-alt);
+}
+.about-map-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.map-container {
+  position: relative;
+  margin-bottom: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f5f3f0;
+}
+.world-map-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* City pins */
+.city-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.pin-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  animation: pinPulse 2.5s ease-out infinite;
+}
+.city-pin:nth-child(2) .pin-glow { animation-delay: 0.5s; }
+.city-pin:nth-child(3) .pin-glow { animation-delay: 1.0s; }
+.city-pin:nth-child(4) .pin-glow { animation-delay: 1.5s; }
+
+@keyframes pinPulse {
+  0% { transform: scale(0.5); opacity: 0.5; }
+  100% { transform: scale(2); opacity: 0; }
+}
+.pin-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 3px rgba(181,154,108,.2), 0 1px 4px rgba(0,0,0,.15);
+}
+.pin-label {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--text);
+}
+
+/* Location cards */
+.about-locations {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.about-location-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.location-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(181,154,108,.2);
+}
+.about-location-item strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .04em;
+}
+.about-location-item span {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: .02em;
+}
+
 /* ============================================================
    FOOTER
    ============================================================ */
@@ -1256,6 +1359,7 @@ h1, h2, h3 {
   .contact-layout { grid-template-columns: 1fr; gap: 40px; }
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
   .about-layout { grid-template-columns: 1fr; gap: 40px; }
+  .about-locations { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -1338,6 +1442,9 @@ h1, h2, h3 {
   .td-product .td-brand { display: inline; margin-right: 6px; }
   .form-preview-img { width: 72px; height: 72px; }
   .footer-bottom { flex-direction: column; gap: 8px; align-items: center; }
+  .pin-label { font-size: 10px; padding: 2px 6px; }
+  .pin-dot { width: 8px; height: 8px; }
+  .pin-glow { width: 22px; height: 22px; }
 }
 
 @media (max-width: 480px) {
@@ -1349,4 +1456,6 @@ h1, h2, h3 {
   .container { padding: 0 12px; }
   .about-hero { min-height: 240px; }
   .about-value-item { padding: 18px 16px; }
+  .about-locations { grid-template-columns: 1fr; }
+  .pin-label { font-size: 9px; }
 }

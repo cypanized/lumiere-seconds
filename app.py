@@ -336,7 +336,7 @@ def build_admin_form(product=None):
                                condition=product.get("condition", ""),
                                is_new_checked="checked" if product.get("is_new") else "",
                                is_featured_checked="checked" if product.get("is_featured") else "",
-                               current_images=", ".join(imgs),
+                               current_images="",
                                image_preview=preview,
                                submit_label="Save Changes")
     return render_template("admin_form.html",
@@ -530,7 +530,7 @@ class Handler(BaseHTTPRequestHandler):
                     images.append(f"/uploads/{save_name}")
 
                 if not images and fields.get("image_urls", "").strip():
-                    images = [u.strip() for u in fields["image_urls"].split(",") if u.strip()]
+                    images = [fields["image_urls"].strip()]
 
                 product = {
                     "id": new_id,
@@ -574,16 +574,13 @@ class Handler(BaseHTTPRequestHandler):
                                 f.write(data)
                             uploaded.append(f"/uploads/{save_name}")
 
-                        # URL field (only used if no files uploaded and no kept images)
-                        url_images = []
-                        if not uploaded and not kept_images and fields.get("image_urls", "").strip():
-                            url_images = [u.strip() for u in fields["image_urls"].split(",") if u.strip()]
+                        # URL field — single URL appended if no file uploaded
+                        url_image = fields.get("image_urls", "").strip()
+                        if not uploaded and url_image:
+                            uploaded.append(url_image)
 
-                        # Merge: URL overrides, or kept existing + new uploads
-                        if url_images:
-                            final_images = url_images
-                        else:
-                            final_images = kept_images + uploaded
+                        # Merge: kept existing + new (upload or URL)
+                        final_images = kept_images + uploaded
 
                         p["name"] = fields.get("name", p["name"])
                         p["brand"] = fields.get("brand", p["brand"])

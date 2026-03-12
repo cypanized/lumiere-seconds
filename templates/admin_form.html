@@ -94,15 +94,15 @@
       {{image_preview}}
 
       <div class="form-group">
-        <label for="photos">Upload Photos</label>
-        <input type="file" id="photos" name="photos" accept="image/*" multiple class="file-input">
-        <span class="form-help">Upload product images (JPEG, PNG). Multiple files allowed.</span>
+        <label for="photos">Add Photo</label>
+        <input type="file" id="photos" name="photos" accept="image/*" class="file-input">
+        <span class="form-help">Upload one image (JPEG, PNG). Save to add more.</span>
       </div>
 
       <div class="form-group">
-        <label for="image_urls">Or Paste Image URLs</label>
-        <input type="text" id="image_urls" name="image_urls" value="{{current_images}}" placeholder="https://example.com/image.jpg (comma-separated)">
-        <span class="form-help">Comma-separated URLs. Used if no files uploaded.</span>
+        <label for="image_urls">Or Paste Image URL</label>
+        <input type="text" id="image_urls" name="image_urls" placeholder="https://example.com/image.jpg">
+        <span class="form-help">Paste a single URL. Used if no file uploaded.</span>
       </div>
 
       <div class="checkbox-row">

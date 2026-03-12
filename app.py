@@ -299,7 +299,7 @@ def build_admin(products, msg="", username="admin"):
                            admin_user_rows=admin_rows)
 
 
-def build_admin_form(product=None):
+def build_admin_form(product=None, alert=""):
     if product:
         imgs = product.get("images", [])
         preview = ""
@@ -325,9 +325,11 @@ def build_admin_form(product=None):
                 f'<input type="hidden" name="keep_images" id="keep_images" value="{keep_val}">'
                 f'</div>'
             )
+        alert_html = f'<div class="alert">{alert}</div>' if alert else ""
         return render_template("admin_form.html",
                                form_title="Edit Product",
                                action=f"/admin/edit/{product['id']}",
+                               alert=alert_html,
                                name=product.get("name", ""),
                                brand=product.get("brand", ""),
                                price=str(product.get("price", "")),
@@ -342,6 +344,7 @@ def build_admin_form(product=None):
     return render_template("admin_form.html",
                            form_title="Add New Product",
                            action="/admin/add",
+                           alert="",
                            name="", brand="", price="", description="",
                            category="", condition="",
                            is_new_checked="", is_featured_checked="",
@@ -462,10 +465,11 @@ class Handler(BaseHTTPRequestHandler):
             elif path.startswith("/admin/edit/"):
                 if not self.require_auth():
                     return
-                pid = path.split("/admin/edit/")[1]
+                pid = path.split("/admin/edit/")[1].split("?")[0]
+                msg = params.get("msg", [""])[0]
                 prod = next((p for p in products if p["id"] == pid), None)
                 if prod:
-                    self.send_page(build_admin_form(prod))
+                    self.send_page(build_admin_form(prod, alert=msg))
                 else:
                     self.send_redirect("/admin?msg=Product+not+found")
 
@@ -595,7 +599,7 @@ class Handler(BaseHTTPRequestHandler):
                         break
 
                 save_products(products)
-                self.send_redirect("/admin?msg=Product+updated+successfully")
+                self.send_redirect(f"/admin/edit/{pid}?msg=Product+updated+successfully")
 
             elif path.startswith("/admin/delete/"):
                 pid = path.split("/admin/delete/")[1]

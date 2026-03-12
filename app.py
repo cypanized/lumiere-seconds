@@ -197,15 +197,21 @@ def build_product_detail(product):
     if not product:
         return render_template("404.html")
 
+    image_list = product.get("images", [])
     imgs_html = ""
-    for i, img in enumerate(product.get("images", [])):
+    for i, img in enumerate(image_list):
         active = "active" if i == 0 else ""
         imgs_html += f'<div class="slide {active}"><img src="{img}" alt="{product["name"]}"></div>'
     if not imgs_html:
         imgs_html = '<div class="slide active"><img src="https://via.placeholder.com/600x750?text=No+Image" alt="No image"></div>'
 
+    # Add prev/next arrows if multiple images
+    if len(image_list) > 1:
+        imgs_html += '<button class="gallery-arrow gallery-prev" onclick="slideNav(-1)">&#8249;</button>'
+        imgs_html += '<button class="gallery-arrow gallery-next" onclick="slideNav(1)">&#8250;</button>'
+
     thumb_html = ""
-    for i, img in enumerate(product.get("images", [])):
+    for i, img in enumerate(image_list):
         active = "active" if i == 0 else ""
         thumb_html += f'<button class="thumb {active}" onclick="goSlide({i})"><img src="{img}" alt="thumb"></button>'
 
@@ -298,8 +304,27 @@ def build_admin_form(product=None):
         imgs = product.get("images", [])
         preview = ""
         if imgs:
-            thumbs = "".join(f'<img src="{img}" alt="Product image" class="form-preview-img">' for img in imgs)
-            preview = f'<div class="form-group"><label>Current Images</label><div class="form-preview-row">{thumbs}</div></div>'
+            item_list = []
+            for i, img in enumerate(imgs):
+                main_badge = '<span class="img-main-badge">Main</span>' if i == 0 else ''
+                set_main = '' if i == 0 else '<button type="button" class="img-set-main" onclick="setMainImage(this)">&#9733; Main</button>'
+                item_list.append(
+                    f'<div class="img-manage-item" data-url="{img}" draggable="true">'
+                    f'{main_badge}'
+                    f'<img src="{img}" alt="Product image" class="form-preview-img">'
+                    f'<span class="img-remove-badge" onclick="toggleImgDelete(this.parentElement)">&times;</span>'
+                    f'{set_main}'
+                    f'</div>'
+                )
+            items = "".join(item_list)
+            keep_val = ", ".join(imgs)
+            drag_hint = ' — drag to reorder' if len(imgs) > 1 else ''
+            preview = (
+                f'<div class="form-group"><label>Current Images <span class="form-help" style="display:inline">(click &times; to remove{drag_hint})</span></label>'
+                f'<div class="form-preview-row" id="imgRow">{items}</div>'
+                f'<input type="hidden" name="keep_images" id="keep_images" value="{keep_val}">'
+                f'</div>'
+            )
         return render_template("admin_form.html",
                                form_title="Edit Product",
                                action=f"/admin/edit/{product['id']}",
@@ -535,17 +560,30 @@ class Handler(BaseHTTPRequestHandler):
 
                 for p in products:
                     if p["id"] == pid:
-                        new_images = []
+                        # Kept images (existing ones user didn't delete)
+                        keep_raw = fields.get("keep_images", "").strip()
+                        kept_images = [u.strip() for u in keep_raw.split(",") if u.strip()] if keep_raw else []
+
+                        # Newly uploaded images
+                        uploaded = []
                         for _, filename, data in files:
                             ext = os.path.splitext(filename)[1] or ".jpg"
                             save_name = f"{pid}_{uuid.uuid4().hex[:6]}{ext}"
                             save_path = os.path.join(UPLOAD_DIR, save_name)
                             with open(save_path, "wb") as f:
                                 f.write(data)
-                            new_images.append(f"/uploads/{save_name}")
+                            uploaded.append(f"/uploads/{save_name}")
 
-                        if not new_images and fields.get("image_urls", "").strip():
-                            new_images = [u.strip() for u in fields["image_urls"].split(",") if u.strip()]
+                        # URL field (only used if no files uploaded and no kept images)
+                        url_images = []
+                        if not uploaded and not kept_images and fields.get("image_urls", "").strip():
+                            url_images = [u.strip() for u in fields["image_urls"].split(",") if u.strip()]
+
+                        # Merge: URL overrides, or kept existing + new uploads
+                        if url_images:
+                            final_images = url_images
+                        else:
+                            final_images = kept_images + uploaded
 
                         p["name"] = fields.get("name", p["name"])
                         p["brand"] = fields.get("brand", p["brand"])
@@ -555,8 +593,8 @@ class Handler(BaseHTTPRequestHandler):
                         p["condition"] = fields.get("condition", p["condition"])
                         p["is_new"] = "is_new" in fields
                         p["is_featured"] = "is_featured" in fields
-                        if new_images:
-                            p["images"] = new_images
+                        if final_images:
+                            p["images"] = final_images
                         break
 
                 save_products(products)

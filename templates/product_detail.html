@@ -122,11 +122,18 @@ function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
 }
 
+var currentSlide = 0;
 function goSlide(n) {
-  const slides = document.querySelectorAll('.gallery .slide');
-  const thumbs = document.querySelectorAll('.gallery .thumb');
-  slides.forEach((s, i) => s.classList.toggle('active', i === n));
-  thumbs.forEach((t, i) => t.classList.toggle('active', i === n));
+  currentSlide = n;
+  var slides = document.querySelectorAll('.gallery .slide');
+  var thumbs = document.querySelectorAll('.gallery .thumb');
+  slides.forEach(function(s, i) { s.classList.toggle('active', i === n); });
+  thumbs.forEach(function(t, i) { t.classList.toggle('active', i === n); });
+}
+function slideNav(dir) {
+  var total = document.querySelectorAll('.gallery .slide').length;
+  currentSlide = (currentSlide + dir + total) % total;
+  goSlide(currentSlide);
 }
 
 function showTab(tab) {

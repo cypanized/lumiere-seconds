@@ -128,6 +128,97 @@
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
 }
+// Rebuild keep_images from current DOM order + update main badges
+function updateKeepImages() {
+  var items = document.querySelectorAll('#imgRow .img-manage-item:not(.marked-delete)');
+  var urls = [];
+  for (var i = 0; i < items.length; i++) urls.push(items[i].getAttribute('data-url'));
+  var field = document.getElementById('keep_images');
+  if (field) field.value = urls.join(', ');
+  // Update main badges
+  var all = document.querySelectorAll('#imgRow .img-manage-item');
+  var firstFound = false;
+  for (var j = 0; j < all.length; j++) {
+    var badge = all[j].querySelector('.img-main-badge');
+    var btn = all[j].querySelector('.img-set-main');
+    var isFirst = !firstFound && !all[j].classList.contains('marked-delete');
+    if (isFirst) firstFound = true;
+    if (badge) badge.style.display = isFirst ? '' : 'none';
+    if (btn) btn.style.display = isFirst ? 'none' : '';
+    if (!badge && isFirst) {
+      var b = document.createElement('span');
+      b.className = 'img-main-badge';
+      b.textContent = 'Main';
+      all[j].insertBefore(b, all[j].firstChild);
+    }
+    if (!btn && !isFirst && !all[j].classList.contains('marked-delete')) {
+      var s = document.createElement('button');
+      s.type = 'button';
+      s.className = 'img-set-main';
+      s.innerHTML = '&#9733; Main';
+      s.onclick = function() { setMainImage(this); };
+      all[j].appendChild(s);
+    }
+  }
+}
+
+// Toggle image for deletion
+function toggleImgDelete(el) {
+  el.classList.toggle('marked-delete');
+  updateKeepImages();
+}
+
+// Set image as main (move to first position)
+function setMainImage(btn) {
+  var item = btn.closest('.img-manage-item');
+  var row = document.getElementById('imgRow');
+  if (item && row) {
+    row.insertBefore(item, row.firstChild);
+    updateKeepImages();
+  }
+}
+
+// Drag-and-drop reordering
+(function() {
+  var dragItem = null;
+  var row = document.getElementById('imgRow');
+  if (!row) return;
+  row.addEventListener('dragstart', function(e) {
+    dragItem = e.target.closest('.img-manage-item');
+    if (dragItem) {
+      dragItem.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    }
+  });
+  row.addEventListener('dragend', function() {
+    if (dragItem) dragItem.classList.remove('dragging');
+    dragItem = null;
+  });
+  row.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    var target = e.target.closest('.img-manage-item');
+    if (target && target !== dragItem) {
+      var items = Array.from(row.querySelectorAll('.img-manage-item'));
+      var dragIdx = items.indexOf(dragItem);
+      var targetIdx = items.indexOf(target);
+      if (dragIdx < targetIdx) {
+        row.insertBefore(dragItem, target.nextSibling);
+      } else {
+        row.insertBefore(dragItem, target);
+      }
+    }
+  });
+  row.addEventListener('drop', function(e) {
+    e.preventDefault();
+    if (dragItem) {
+      dragItem.classList.remove('dragging');
+      updateKeepImages();
+      dragItem = null;
+    }
+  });
+})();
+
 // Pre-select category and condition if editing
 (function() {
   const cat = '{{category}}';

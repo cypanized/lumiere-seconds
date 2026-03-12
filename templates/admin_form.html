@@ -95,15 +95,18 @@
       {{image_preview}}
 
       <div class="form-group">
-        <label for="photos">Add Photo</label>
-        <input type="file" id="photos" name="photos" accept="image/*" class="file-input">
-        <span class="form-help">Upload one image (JPEG, PNG). Save to add more.</span>
+        <label>Add Photos</label>
+        <input type="file" id="photosPicker" accept="image/*" class="file-input">
+        <span class="form-help">Select an image to add. You can keep adding more before saving.</span>
+        <div class="form-preview-row" id="newImgRow"></div>
       </div>
 
       <div class="form-group">
-        <label for="image_urls">Or Paste Image URL</label>
-        <input type="text" id="image_urls" name="image_urls" placeholder="https://example.com/image.jpg">
-        <span class="form-help">Paste a single URL. Used if no file uploaded.</span>
+        <label for="urlInput">Or Add by URL</label>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="urlInput" placeholder="https://example.com/image.jpg" style="flex:1">
+          <button type="button" class="btn-sm" onclick="addUrlImage()">Add</button>
+        </div>
       </div>
 
       <div class="checkbox-row">
@@ -219,6 +222,89 @@ function setMainImage(btn) {
     }
   });
 })();
+
+// ── New image accumulator ──
+var pendingFiles = [];
+var pendingUrls = [];
+
+function renderNewPreviews() {
+  var row = document.getElementById('newImgRow');
+  row.innerHTML = '';
+  pendingFiles.forEach(function(file, i) {
+    var div = document.createElement('div');
+    div.className = 'img-manage-item';
+    var img = document.createElement('img');
+    img.className = 'form-preview-img';
+    img.src = URL.createObjectURL(file);
+    var x = document.createElement('span');
+    x.className = 'img-remove-badge';
+    x.style.opacity = '1';
+    x.style.pointerEvents = 'auto';
+    x.innerHTML = '&times;';
+    x.onclick = function() { pendingFiles.splice(i, 1); renderNewPreviews(); };
+    div.appendChild(img);
+    div.appendChild(x);
+    row.appendChild(div);
+  });
+  pendingUrls.forEach(function(url, i) {
+    var div = document.createElement('div');
+    div.className = 'img-manage-item';
+    var img = document.createElement('img');
+    img.className = 'form-preview-img';
+    img.src = url;
+    var x = document.createElement('span');
+    x.className = 'img-remove-badge';
+    x.style.opacity = '1';
+    x.style.pointerEvents = 'auto';
+    x.innerHTML = '&times;';
+    x.onclick = function() { pendingUrls.splice(i, 1); renderNewPreviews(); };
+    div.appendChild(img);
+    div.appendChild(x);
+    row.appendChild(div);
+  });
+}
+
+document.getElementById('photosPicker').addEventListener('change', function() {
+  if (this.files.length > 0) {
+    for (var i = 0; i < this.files.length; i++) pendingFiles.push(this.files[i]);
+    this.value = '';
+    renderNewPreviews();
+  }
+});
+
+function addUrlImage() {
+  var input = document.getElementById('urlInput');
+  var url = input.value.trim();
+  if (url) {
+    pendingUrls.push(url);
+    input.value = '';
+    renderNewPreviews();
+  }
+}
+
+// Intercept form submit to include accumulated files
+document.querySelector('.admin-form').addEventListener('submit', function(e) {
+  if (pendingFiles.length === 0 && pendingUrls.length === 0) return;
+  e.preventDefault();
+  var form = this;
+  var fd = new FormData(form);
+  // Remove the picker input (it's empty)
+  fd.delete('photos');
+  // Add accumulated files
+  pendingFiles.forEach(function(file) { fd.append('photos', file, file.name); });
+  // Add URLs as comma-separated
+  if (pendingUrls.length > 0) fd.set('image_urls', pendingUrls.join(', '));
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', form.action);
+  xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 400) {
+      window.location.href = xhr.responseURL || '/admin';
+    } else {
+      window.location.href = '/admin';
+    }
+  };
+  xhr.send(fd);
+});
 
 // Pre-select category and condition if editing
 (function() {

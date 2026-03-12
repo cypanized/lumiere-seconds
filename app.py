@@ -533,8 +533,12 @@ class Handler(BaseHTTPRequestHandler):
                         f.write(data)
                     images.append(f"/uploads/{save_name}")
 
-                if not images and fields.get("image_urls", "").strip():
-                    images = [fields["image_urls"].strip()]
+                url_raw = fields.get("image_urls", "").strip()
+                if url_raw:
+                    for u in url_raw.split(","):
+                        u = u.strip()
+                        if u:
+                            images.append(u)
 
                 product = {
                     "id": new_id,
@@ -578,10 +582,13 @@ class Handler(BaseHTTPRequestHandler):
                                 f.write(data)
                             uploaded.append(f"/uploads/{save_name}")
 
-                        # URL field — single URL appended if no file uploaded
-                        url_image = fields.get("image_urls", "").strip()
-                        if not uploaded and url_image:
-                            uploaded.append(url_image)
+                        # URL field — comma-separated URLs from accumulator
+                        url_raw = fields.get("image_urls", "").strip()
+                        if url_raw:
+                            for u in url_raw.split(","):
+                                u = u.strip()
+                                if u:
+                                    uploaded.append(u)
 
                         # Merge: kept existing + new (upload or URL)
                         final_images = kept_images + uploaded
@@ -599,7 +606,7 @@ class Handler(BaseHTTPRequestHandler):
                         break
 
                 save_products(products)
-                self.send_redirect(f"/admin/edit/{pid}?msg=Product+updated+successfully")
+                self.send_redirect("/admin?msg=Product+updated+successfully")
 
             elif path.startswith("/admin/delete/"):
                 pid = path.split("/admin/delete/")[1]

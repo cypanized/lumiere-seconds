@@ -3,14 +3,17 @@
     "id": "1",
     "name": "Classic Flap Bag",
     "brand": "Chanel",
-    "price": 8500,
+    "price": 8500.0,
     "currency": "AED",
     "description": "Timeless Classic Flap in black caviar leather with gold hardware. Excellent condition with original box and authenticity card. Minor signs of wear on the chain strap. A true investment piece that transcends seasons.",
     "category": "Bags",
     "condition": "Excellent",
     "is_new": true,
     "is_featured": true,
-    "images": ["https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=800&q=80"],
+    "images": [
+      "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=800&q=80",
+      "/uploads/1_203508.png"
+    ],
     "created_at": "2026-02-08"
   },
   {
@@ -24,7 +27,9 @@
     "condition": "Very Good",
     "is_new": true,
     "is_featured": false,
-    "images": ["https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80"],
+    "images": [
+      "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80"
+    ],
     "created_at": "2026-02-07"
   },
   {
@@ -38,7 +43,9 @@
     "condition": "Excellent",
     "is_new": false,
     "is_featured": true,
-    "images": ["https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=800&q=80"],
+    "images": [
+      "https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=800&q=80"
+    ],
     "created_at": "2026-02-05"
   },
   {
@@ -52,21 +59,25 @@
     "condition": "Good",
     "is_new": false,
     "is_featured": false,
-    "images": ["https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80"],
+    "images": [
+      "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80"
+    ],
     "created_at": "2026-02-03"
   },
   {
     "id": "5",
-    "name": "Silk Scarf Carré 90",
-    "brand": "Hermès",
+    "name": "Silk Scarf Carr\u00e9 90",
+    "brand": "Herm\u00e8s",
     "price": 680,
     "currency": "AED",
-    "description": "Hermès Carré 90 silk scarf in vibrant equestrian print. Like new condition — worn only once. No pulls or stains. Comes with original box and ribbon.",
+    "description": "Herm\u00e8s Carr\u00e9 90 silk scarf in vibrant equestrian print. Like new condition \u2014 worn only once. No pulls or stains. Comes with original box and ribbon.",
     "category": "Accessories",
     "condition": "Like New",
     "is_new": true,
     "is_featured": false,
-    "images": ["https://images.unsplash.com/photo-1566534335938-05f1f2949435?w=800&q=80"],
+    "images": [
+      "https://images.unsplash.com/photo-1566534335938-05f1f2949435?w=800&q=80"
+    ],
     "created_at": "2026-02-08"
   },
   {
@@ -80,7 +91,9 @@
     "condition": "Very Good",
     "is_new": false,
     "is_featured": false,
-    "images": ["https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=800&q=80"],
+    "images": [
+      "https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=800&q=80"
+    ],
     "created_at": "2026-01-28"
   }
 ]

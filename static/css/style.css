@@ -401,12 +401,13 @@ h1, h2, h3 {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
   background: rgba(255,255,255,.85);
   border: 1px solid var(--border);
+  border-radius: 50%;
   color: var(--text);
-  font-size: 22px;
+  font-size: 28px;
   line-height: 1;
   cursor: pointer;
   display: flex;
@@ -416,8 +417,8 @@ h1, h2, h3 {
   z-index: 2;
 }
 .gallery-arrow:hover { background: #fff; }
-.gallery-prev { left: 10px; }
-.gallery-next { right: 10px; }
+.gallery-prev { left: 12px; }
+.gallery-next { right: 12px; }
 .thumb-row {
   display: flex;
   gap: 8px;
@@ -1470,6 +1471,44 @@ h1, h2, h3 {
 .breadcrumb .sep { margin: 0 8px; opacity: .4; }
 
 /* ============================================================
+   SELL WITH US PAGE
+   ============================================================ */
+.sell-steps {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 48px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.sell-step {
+  text-align: center;
+  padding: 32px 20px;
+}
+.sell-step-icon {
+  color: var(--text);
+  margin-bottom: 20px;
+}
+.sell-step-icon svg {
+  width: 44px;
+  height: 44px;
+}
+.sell-step h3 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.sell-step p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
@@ -1494,6 +1533,7 @@ h1, h2, h3 {
   .hero-actions { flex-direction: column; align-items: center; }
   .hero-btn-primary, .hero-btn-outline { width: 100%; max-width: 280px; text-align: center; }
   .section { padding: 40px 0; }
+  .sell-steps { grid-template-columns: 1fr; gap: 24px; }
   .toolbar { flex-direction: column; align-items: stretch; }
   .search-box { max-width: 100%; }
 

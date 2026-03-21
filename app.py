@@ -167,6 +167,10 @@ def build_home(products):
                            featured_products=featured_html)
 
 
+def build_sell_page():
+    return render_template("sell.html")
+
+
 def build_products_page(products, query="", category=""):
     filtered = products
     if query:
@@ -437,6 +441,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_page(build_contact())
             elif path == "/about":
                 self.send_page(build_about())
+            elif path == "/sell":
+                self.send_page(build_sell_page())
 
             # Auth pages
             elif path == "/admin/login":

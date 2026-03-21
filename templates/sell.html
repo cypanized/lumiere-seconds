@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop — Lumière Seconds</title>
+  <title>Sell With Us — Lumiere Seconds</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -11,15 +11,16 @@
 </head>
 <body>
 
+<!-- Header -->
 <header class="site-header">
   <div class="header-inner">
-    <a href="/" class="logo">Lumière<span>Seconds</span></a>
+    <a href="/" class="logo">Lumiere<span>Seconds</span></a>
     <nav class="main-nav">
       <a href="/">Home</a>
-      <a href="/products" class="active">Shop</a>
-      <a href="/about">About</a>
+      <a href="/products">Shop</a>
       <a href="/sell">Sell</a>
       <a href="/contact">Contact</a>
+      <a href="/admin">Admin</a>
     </nav>
     <div class="header-icons">
       <a href="/products" aria-label="Search">
@@ -32,47 +33,117 @@
   </div>
 </header>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="/">Home</a>
-  <a href="/products">Shop All</a>
-  <a href="/about">About</a>
+  <a href="/" onclick="toggleMenu()">Home</a>
+  <a href="/products" onclick="toggleMenu()">Shop All</a>
   <a href="/sell" onclick="toggleMenu()">Sell With Us</a>
-  <a href="/contact">Contact</a>
+  <a href="/contact" onclick="toggleMenu()">Contact</a>
+  <a href="/admin" onclick="toggleMenu()">Admin</a>
 </div>
 
+<!-- Hero -->
+<section class="hero">
+  <h1>Sell Your Wardrobe, The Simple Way</h1>
+  <p>We accept designer bags, shoes, clothing, fine jewellery, and accessories</p>
+</section>
+
+<!-- Steps -->
 <section class="section">
   <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">All Pieces</h2>
-    </div>
+    <div class="sell-steps">
 
-    <div class="toolbar">
-      <form class="search-box" action="/products" method="GET">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-        <input type="text" name="q" placeholder="Search by name, brand..." value="{{search_value}}" autocomplete="off">
-      </form>
-      <div class="filter-row" id="filterRow">
-        {{category_filters}}
+      <div class="sell-step">
+        <div class="sell-step-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            <path d="M8 10h.01M12 10h.01M16 10h.01"/>
+          </svg>
+        </div>
+        <h3>1. WhatsApp Us</h3>
+        <p>Simply message us and send your product details by WhatsApp</p>
       </div>
-    </div>
 
-    <div class="product-grid">
-      {{product_cards}}
+      <div class="sell-step">
+        <div class="sell-step-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <h3>2. Get a Quotation</h3>
+        <p>Our buying team will provide you with a quotation for your items including our commission for your approval</p>
+      </div>
+
+      <div class="sell-step">
+        <div class="sell-step-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <h3>3. Approve to Collect</h3>
+        <p>Once you approve our offer, we will arrange for your items to be collected, for free</p>
+      </div>
+
+      <div class="sell-step">
+        <div class="sell-step-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <h3>4. 100% Certified</h3>
+        <p>Each item submitted will be carefully inspected and authenticated by our expert team</p>
+      </div>
+
+      <div class="sell-step">
+        <div class="sell-step-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </div>
+        <h3>5. Showcase Your Items</h3>
+        <p>We photograph your items, list them on our website and social media, and display them at our store</p>
+      </div>
+
+      <div class="sell-step">
+        <div class="sell-step-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="2" y="7" width="16" height="13" rx="2"/>
+            <path d="M18 7V5a2 2 0 00-2-2H8a2 2 0 00-2 2v2"/>
+            <path d="M22 10l-4 2v4l4 2"/>
+            <path d="M8 16l2-2 2 2"/>
+          </svg>
+        </div>
+        <h3>6. Sell & Earn</h3>
+        <p>Time to sell your items and get your money as soon as they sell</p>
+      </div>
+
     </div>
   </div>
+</section>
+
+<!-- CTA -->
+<section class="hero" style="padding: 56px 24px;">
+  <h2 style="font-family: var(--font-display); font-size: clamp(20px, 4vw, 28px); margin-bottom: 16px;">Ready to Sell?</h2>
+  <p style="margin-bottom: 24px;">Get in touch with us today to start consigning your luxury pieces</p>
+  <a href="https://wa.me/971544783154" target="_blank" class="btn-primary" style="display: inline-block;">WhatsApp Us</a>
 </section>
 
 <footer class="site-footer">
   <div class="container">
     <div class="footer-inner">
       <div>
-        <div class="footer-brand">Lumière Seconds</div>
+        <div class="footer-brand">Lumiere Seconds</div>
         <p class="footer-tagline">Curated pre-owned luxury. Every piece authenticated and carefully selected for the discerning collector.</p>
       </div>
       <div class="footer-col">
         <h4>Navigate</h4>
         <a href="/">Home</a>
         <a href="/products">Shop All</a>
-        <a href="/about">About</a>
+        <a href="/sell">Sell With Us</a>
         <a href="/contact">Contact</a>
       </div>
       <div class="footer-col">
@@ -83,7 +154,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Lumière Seconds. All rights reserved.</span>
+      <span>&copy; 2026 Lumiere Seconds. All rights reserved.</span>
       <a href="/admin" class="footer-admin-link" title="Admin">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         Admin
@@ -96,19 +167,6 @@
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
 }
-
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const cat = this.dataset.cat;
-    const params = new URLSearchParams(window.location.search);
-    if (cat === 'All') {
-      params.delete('category');
-    } else {
-      params.set('category', cat);
-    }
-    window.location.href = '/products?' + params.toString();
-  });
-});
 </script>
 </body>
 </html>

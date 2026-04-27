@@ -120,6 +120,10 @@
           <input type="checkbox" id="is_featured" name="is_featured" {{is_featured_checked}}>
           <label for="is_featured">Featured</label>
         </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="price_on_request" name="price_on_request" {{price_on_request_checked}}>
+          <label for="price_on_request">Price on Request</label>
+        </div>
       </div>
 
       <div class="form-actions">
@@ -320,6 +324,26 @@ document.querySelector('.admin-form').addEventListener('submit', function(e) {
     const condEl = document.getElementById('condition');
     for (let o of condEl.options) { if (o.value === cond) o.selected = true; }
   }
+})();
+
+// Price on Request toggle
+(function() {
+  var cb = document.getElementById('price_on_request');
+  var priceField = document.getElementById('price');
+  if (!cb) return;
+  function toggle() {
+    if (cb.checked) {
+      priceField.removeAttribute('required');
+      priceField.style.opacity = '0.4';
+      priceField.placeholder = 'Optional (reference only)';
+    } else {
+      priceField.setAttribute('required', '');
+      priceField.style.opacity = '1';
+      priceField.placeholder = '0.00';
+    }
+  }
+  cb.addEventListener('change', toggle);
+  toggle();
 })();
 </script>
 </body>

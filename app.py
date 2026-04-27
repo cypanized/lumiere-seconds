@@ -144,6 +144,7 @@ def render_template(template_name, **ctx):
 def product_card_html(p):
     badge = '<span class="badge">New</span>' if p.get("is_new") else ""
     img = p["images"][0] if p.get("images") else "https://via.placeholder.com/400x500?text=No+Image"
+    price_display = "Price on Request" if p.get("price_on_request") else f'AED {p["price"]:,.2f}'
     return f'''<a href="/product/{p["id"]}" class="product-card">
       <div class="product-image">
         <img src="{img}" alt="{p["name"]}" loading="lazy">
@@ -152,7 +153,7 @@ def product_card_html(p):
       <div class="product-info">
         <span class="product-brand">{p["brand"]}</span>
         <span class="product-name">{p["name"]}</span>
-        <span class="product-price">AED {p["price"]:,.2f}</span>
+        <span class="product-price">{price_display}</span>
       </div>
     </a>'''
 
@@ -220,13 +221,19 @@ def build_product_detail(product):
         thumb_html += f'<button class="thumb {active}" onclick="goSlide({i})"><img src="{img}" alt="thumb"></button>'
 
     badge = '<span class="detail-badge">New Arrival</span>' if product.get("is_new") else ""
-    wa_msg = f"Hi, I'm interested in the {product['brand']} {product['name']} (AED {product['price']:,.2f}) listed on Lumière Seconds."
+    if product.get("price_on_request"):
+        wa_msg = f"Hi, I'd like to inquire about pricing for the {product['brand']} {product['name']} listed on Lumière Seconds."
+        price_display = "Price on Request"
+    else:
+        wa_msg = f"Hi, I'm interested in the {product['brand']} {product['name']} (AED {product['price']:,.2f}) listed on Lumière Seconds."
+        price_display = f"AED {product['price']:,.2f}"
     wa_link = f"https://wa.me/971544783154?text={wa_msg.replace(' ', '%20')}"
 
     return render_template("product_detail.html",
                            name=product["name"],
                            brand=product["brand"],
                            price=f"{product['price']:,.2f}",
+                           price_display=price_display,
                            description=product.get("description", ""),
                            condition=product.get("condition", "N/A"),
                            category=product.get("category", "N/A"),
@@ -264,7 +271,7 @@ def build_admin(products, msg="", username="admin"):
             <span class="td-brand">{p["brand"]}</span>
             <span class="td-name">{p["name"]}</span>
           </td>
-          <td data-label="Price" class="td-price">AED {p["price"]:,.2f}</td>
+          <td data-label="Price" class="td-price">AED {p["price"]:,.2f}{"  <span class='status-badge status-por'>POR</span>" if p.get("price_on_request") else ""}</td>
           <td data-label="Category">{p.get("category","")}</td>
           <td data-label="Status" class="td-status">{badges if badges else '<span class="status-badge status-none">—</span>'}</td>
           <td data-label="Actions" class="actions-cell">
@@ -342,6 +349,7 @@ def build_admin_form(product=None, alert=""):
                                condition=product.get("condition", ""),
                                is_new_checked="checked" if product.get("is_new") else "",
                                is_featured_checked="checked" if product.get("is_featured") else "",
+                               price_on_request_checked="checked" if product.get("price_on_request") else "",
                                current_images="",
                                image_preview=preview,
                                submit_label="Save Changes")
@@ -352,6 +360,7 @@ def build_admin_form(product=None, alert=""):
                            name="", brand="", price="", description="",
                            category="", condition="",
                            is_new_checked="", is_featured_checked="",
+                           price_on_request_checked="",
                            current_images="", image_preview="",
                            submit_label="Add Product")
 
@@ -550,13 +559,14 @@ class Handler(BaseHTTPRequestHandler):
                     "id": new_id,
                     "name": fields.get("name", ""),
                     "brand": fields.get("brand", ""),
-                    "price": float(fields.get("price", 0)),
+                    "price": float(fields.get("price") or 0),
                     "currency": "AED",
                     "description": fields.get("description", ""),
                     "category": fields.get("category", ""),
                     "condition": fields.get("condition", ""),
                     "is_new": "is_new" in fields,
                     "is_featured": "is_featured" in fields,
+                    "price_on_request": "price_on_request" in fields,
                     "images": images,
                     "created_at": datetime.now().strftime("%Y-%m-%d"),
                 }
@@ -601,12 +611,13 @@ class Handler(BaseHTTPRequestHandler):
 
                         p["name"] = fields.get("name", p["name"])
                         p["brand"] = fields.get("brand", p["brand"])
-                        p["price"] = float(fields.get("price", p["price"]))
+                        p["price"] = float(fields.get("price") or p.get("price", 0))
                         p["description"] = fields.get("description", p["description"])
                         p["category"] = fields.get("category", p["category"])
                         p["condition"] = fields.get("condition", p["condition"])
                         p["is_new"] = "is_new" in fields
                         p["is_featured"] = "is_featured" in fields
+                        p["price_on_request"] = "price_on_request" in fields
                         if final_images:
                             p["images"] = final_images
                         break
